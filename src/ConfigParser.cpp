@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/01 18:09:13 by root             ###   ########.fr       */
+/*   Updated: 2023/06/01 18:48:27 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,23 @@
  /* Constructor */
 ConfigParser::ConfigParser() {}
 
+ConfigParser::ConfigParser(std::string path)
+{
+    std::string buffer;
+    
+    this->configFile = path;
+}
+
 /* Destructor */
 ConfigParser::~ConfigParser() {}
+
+/* Utils */
+std::string ConfigParser::readFile(std::string path)
+{
+    std::string buffer;
+
+    return (buffer);
+}
 
 /* Getters */
 std::string ConfigParser::getConfigFile() { return (this->configFile); }
