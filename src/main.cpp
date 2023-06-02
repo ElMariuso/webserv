@@ -6,13 +6,15 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 12:08:11 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 12:09:38 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 12:32:53 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/HTTPServer.hpp"
+#include "../include/HTTPServer.hpp"
 
 int main(int argc, char **argv)
 {
+    (void)argc;
+    (void)argv;
     return (0);
 }

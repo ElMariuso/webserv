@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 11:56:56 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 12:33:08 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ ConfigParser::~ConfigParser() {}
 /* Utils */
 std::string ConfigParser::readFile(std::string path)
 {
+    (void)path;
     std::string buffer;
 
     return (buffer);
