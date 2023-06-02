@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 14:47:22 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 14:59:38 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ ConfigParser::ConfigParser()
     ret = this->configParsing();
     if (ret == -1)
         throw (std::runtime_error("Can't open file!"));
+    else if (ret == -2)
+        throw (std::runtime_error("Bad configuration format!"));
 }
 
 ConfigParser::ConfigParser(std::string path)
@@ -31,6 +33,8 @@ ConfigParser::ConfigParser(std::string path)
     ret = this->configParsing();
     if (ret == -1)
         throw (std::runtime_error("Can't open file!"));
+    else if (ret == -2)
+        throw (std::runtime_error("Bad configuration format!"));
 }
 
 /* Destructor */
@@ -45,6 +49,8 @@ int ConfigParser::configParsing()
     buffer = this->readFile(this->configFile);
     if (buffer == "")
         return (-1);
+    if (this->isInRightFormat() == false)
+        return (-2);
     return (0);
 }
 
@@ -94,6 +100,12 @@ std::string ConfigParser::readFile(std::string path)
     else
         return ("");
     return (buffer);
+}
+
+/* Checkers */
+bool ConfigParser::isInRightFormat()
+{
+    return (true);
 }
 
 /* Debug */

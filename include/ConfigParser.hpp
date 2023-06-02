@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:46:59 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 14:39:37 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 14:51:25 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ class ConfigParser
         int                         configParsing();
         void                        initDefaultValues();
         std::string                 readFile(std::string path);
+
+        /* Checkers */
+        bool                        isInRightFormat();
 
         /* Debug */
         void                        printAll();
