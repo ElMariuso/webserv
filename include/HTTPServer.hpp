@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:47:13 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 12:09:32 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 13:35:48 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@ class HTTPServer: public ConfigParser
 {
     /* Member functions ********************************************************* */
     public:
+        /* Constructor */
+        HTTPServer();
+        HTTPServer(std::string path);
+
+        /* Destructor */
+        ~HTTPServer();
 
     /* Attributes *************************************************************** */
     private:

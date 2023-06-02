@@ -6,13 +6,13 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 12:33:08 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 13:38:18 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ConfigParser.hpp"
 
- /* Constructor */
+/* Constructor */
 ConfigParser::ConfigParser() {}
 
 ConfigParser::ConfigParser(std::string path)
@@ -21,6 +21,9 @@ ConfigParser::ConfigParser(std::string path)
     
     this->configFile = path;
     buffer = this->readFile(this->configFile);
+    if (buffer == "")
+        throw (std::runtime_error("Can't open file!"));
+    std::cout << buffer << std::endl;
 }
 
 /* Destructor */
@@ -29,9 +32,17 @@ ConfigParser::~ConfigParser() {}
 /* Utils */
 std::string ConfigParser::readFile(std::string path)
 {
-    (void)path;
-    std::string buffer;
+    std::string         buffer;
+    std::ostringstream  o_buffer;
+    std::ifstream       file(path.c_str());
 
+    if (file)
+    {
+        o_buffer << file.rdbuf();
+        buffer = o_buffer.str();
+    }
+    else
+        return ("");
     return (buffer);
 }
 
