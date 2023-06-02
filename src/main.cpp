@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 12:08:11 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 13:35:11 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 14:40:33 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int main(int argc, char **argv)
 
         /* Run */
         HTTPServer  server(argv[1]);
+
+        server.printAll();
     }
     catch (const std::exception& e)
     {

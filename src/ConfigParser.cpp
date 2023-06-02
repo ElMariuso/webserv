@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 14:28:59 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 14:47:22 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,35 @@ std::string ConfigParser::readFile(std::string path)
     else
         return ("");
     return (buffer);
+}
+
+/* Debug */
+void ConfigParser::printAll()
+{
+    std::cout << "Config File: " << this->getConfigFile() << std::endl;
+    if (this->getPort().size() == 0)
+        std::cout << "[1] - Port: Nothing" << std::endl;
+    for (std::size_t i = 0; i < this->getPort().size(); i++)
+        std::cout << "[" << i + 1 << "] - Port: " << this->getPort().at(i) << std::endl;
+    std::cout << "Host: " << this->getHost() << std::endl;
+    if (this->getServerNames().size() == 0)
+        std::cout << "[1] - Server Name: Nothing" << std::endl;
+    for (std::size_t i = 0; i < this->getServerNames().size(); i++)
+        std::cout << "[" << i + 1 << "] - Server Name: " << this->getServerNames().at(i) << std::endl;
+    std::cout << "Default Server: " << this->getDefaultServer() << std::endl;
+    std::cout << "Error Page: " << this->getErrorPage() << std::endl;
+    std::cout << "Max Request Body Size: " << this->getMaxRequestBodySize() << std::endl;
+    if (this->getAllowedMethods().size() == 0)
+        std::cout << "[1] - Allowed Method: Nothing" << std::endl;
+    for (std::size_t i = 0; i < this->getAllowedMethods().size(); i++)
+        std::cout << "[" << i + 1 << "] - Allowed Method: " << this->getAllowedMethods().at(i) << std::endl;
+    std::cout << "Redirection: " << this->getRedirection() << std::endl;
+    std::cout << "Root Directory: " << this->getRootDirectory() << std::endl;
+    std::cout << "Enable Directory Listing: " << this->getEnableDirectoryListing() << std::endl;
+    std::cout << "Default File: " << this->getDefaultFile() << std::endl;
+    std::cout << "CGI Extension: " << this->getCgiExtension() << std::endl;
+    std::cout << "CGI Path: " << this->getCgiPath() << std::endl;
+    std::cout << "Upload Directory: " << this->getUploadDirectory() << std::endl;
 }
 
 /* Getters */
