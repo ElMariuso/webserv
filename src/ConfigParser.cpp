@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 13:53:31 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 13:57:00 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,22 @@
 /* Constructor */
 ConfigParser::ConfigParser() 
 {
-    std::string buffer;
+    int ret;
     
     this->configFile = "config/default.conf";
-    buffer = this->readFile(this->configFile);
-    if (buffer == "")
+    ret = this->configParsing();
+    if (ret == -1)
         throw (std::runtime_error("Can't open file!"));
-    std::cout << buffer << std::endl;
 }
 
 ConfigParser::ConfigParser(std::string path)
 {
-    std::string buffer;
+    int ret;
     
     this->configFile = path;
-    buffer = this->readFile(this->configFile);
-    if (buffer == "")
+    ret = this->configParsing();
+    if (ret == -1)
         throw (std::runtime_error("Can't open file!"));
-    std::cout << buffer << std::endl;
 }
 
 /* Destructor */
@@ -54,6 +52,17 @@ std::string ConfigParser::readFile(std::string path)
     else
         return ("");
     return (buffer);
+}
+
+int ConfigParser::configParsing()
+{
+    std::string buffer;
+    
+    buffer = this->readFile(this->configFile);
+    if (buffer == "")
+        return (-1);
+    std::cout << buffer << std::endl;
+    return (0);
 }
 
 /* Getters */
