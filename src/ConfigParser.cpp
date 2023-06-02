@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 13:38:18 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 13:40:04 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ std::string ConfigParser::readFile(std::string path)
     {
         o_buffer << file.rdbuf();
         buffer = o_buffer.str();
+        file.close();
     }
     else
         return ("");
