@@ -6,14 +6,23 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 13:40:04 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 13:53:31 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/ConfigParser.hpp"
 
 /* Constructor */
-ConfigParser::ConfigParser() {}
+ConfigParser::ConfigParser() 
+{
+    std::string buffer;
+    
+    this->configFile = "config/default.conf";
+    buffer = this->readFile(this->configFile);
+    if (buffer == "")
+        throw (std::runtime_error("Can't open file!"));
+    std::cout << buffer << std::endl;
+}
 
 ConfigParser::ConfigParser(std::string path)
 {
