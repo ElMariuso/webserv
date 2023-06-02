@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 14:24:13 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 14:28:59 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,14 +45,13 @@ int ConfigParser::configParsing()
     buffer = this->readFile(this->configFile);
     if (buffer == "")
         return (-1);
-    std::cout << buffer << std::endl;
     return (0);
 }
 
 void ConfigParser::initDefaultValues()
 {
     /* Port */
-    this->port = 80;
+    this->port.push_back(80);
     /* Host */
     this->host = "localhost";
     /* Default Server */
@@ -62,8 +61,8 @@ void ConfigParser::initDefaultValues()
     /* Max Request Body Size */
     this->maxRequestBodySize = 1048576;
     /* Allowed Methods */
-    this->allowedMethods.insert(this->allowedMethods.begin(), "POST");
-    this->allowedMethods.insert(this->allowedMethods.begin(), "GET");
+    this->allowedMethods.push_back("POST");
+    this->allowedMethods.push_back("GET");
     /* Redirection */
     this->redirection = "";
     /* Root Directory */
@@ -99,7 +98,7 @@ std::string ConfigParser::readFile(std::string path)
 
 /* Getters */
 std::string ConfigParser::getConfigFile() { return (this->configFile); }
-int ConfigParser::getPort() { return (this->port); }
+std::vector<int> ConfigParser::getPort() { return (this->port); }
 std::string ConfigParser::getHost() { return (this->host); }
 std::vector<std::string> ConfigParser::getServerNames() { return (this->serverNames); }
 std::string ConfigParser::getDefaultServer() { return (this->defaultServer); }

@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:46:59 by root              #+#    #+#             */
-/*   Updated: 2023/06/02 14:16:14 by root             ###   ########.fr       */
+/*   Updated: 2023/06/02 14:28:27 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ class ConfigParser
 
         /* Getters */
         std::string                 getConfigFile();
-        int                         getPort();
+        std::vector<int>            getPort();
         std::string                 getHost();
         std::vector<std::string>    getServerNames();
         std::string                 getDefaultServer();
@@ -59,7 +59,7 @@ class ConfigParser
     /* Attributes *************************************************************** */
     protected:
         std::string                 configFile;
-        int                         port;
+        std::vector<int>            port;
         std::string                 host;
         std::vector<std::string>    serverNames;
         std::string                 defaultServer;
