@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:47:13 by root              #+#    #+#             */
-/*   Updated: 2023/06/07 00:07:26 by root             ###   ########.fr       */
+/*   Updated: 2023/06/07 00:51:12 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ class HTTPServer: public ConfigParser
         int                     setup(int index);
         struct sockaddr_in      setDefaultAddr(int index);
         int                     process();
+
+        /* Error */
+        std::string             errorMessage(int error, int errnoValue);
 
         /* Getters */
         std::vector<t_socket>   getSockets();

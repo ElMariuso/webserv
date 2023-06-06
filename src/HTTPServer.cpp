@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 13:36:01 by root              #+#    #+#             */
-/*   Updated: 2023/06/07 00:37:10 by root             ###   ########.fr       */
+/*   Updated: 2023/06/07 00:51:06 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ HTTPServer::HTTPServer(): ConfigParser()
     {
         ret = this->setup(i);
         if (ret != 0)
-        {
-            error_message = "During setting up server: " + std::string(strerror(ret));
-            throw (std::runtime_error(error_message));
-        }
+            throw (std::runtime_error(this->errorMessage(1, ret)));
     }
     ret = this->process();
 }
@@ -35,14 +32,12 @@ HTTPServer::HTTPServer(std::string path): ConfigParser(path)
     int         ret;
     std::string error_message;
 
+    ret = 0;
     for (std::size_t i = 0; i != this->port.size(); ++i)
     {
         ret = this->setup(i);
         if (ret != 0)
-        {
-            error_message = "During setting up server: " + std::string(strerror(ret));
-            throw (std::runtime_error(error_message));
-        }
+            throw (std::runtime_error(this->errorMessage(1, ret)));
     }
     ret = this->process();
 }
@@ -86,6 +81,14 @@ struct sockaddr_in HTTPServer::setDefaultAddr(int index)
 int HTTPServer::process()
 {
     return (0);   
+}
+
+/* Error */
+std::string HTTPServer::errorMessage(int error, int errnoValue)
+{
+    if (error == 1)
+        return ("During setting up server: " + std::string(strerror(errnoValue)));
+    return ("");
 }
 
 /* Getters */
