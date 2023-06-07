@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 13:36:01 by root              #+#    #+#             */
-/*   Updated: 2023/06/07 00:51:06 by root             ###   ########.fr       */
+/*   Updated: 2023/06/07 15:14:51 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,11 @@ int HTTPServer::setup(int index)
         error = errno;
         return (error);
     }
+    if (listen(new_elem.fd, SOMAXCONN) < 0)
+    {
+        error = errno;
+        return (error);
+    }
     this->sockets.push_back(new_elem);
     return (0);
 }
@@ -74,7 +79,10 @@ struct sockaddr_in HTTPServer::setDefaultAddr(int index)
     memset((char *)&ret, 0, sizeof(ret));
     ret.sin_family = AF_INET;
     ret.sin_port = htons(this->port[index]);
-    // ret.sin_addr.s_addr = htonl(this->host);
+    if (this->host == "localhost")
+       ret.sin_addr.s_addr = INADDR_ANY;
+    // else
+    //     ret.sin_addr.s_addr = NULL; 
     return (ret);
 }
 
