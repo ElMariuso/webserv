@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 13:36:01 by root              #+#    #+#             */
-/*   Updated: 2023/06/07 15:14:51 by root             ###   ########.fr       */
+/*   Updated: 2023/06/08 00:56:54 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,27 @@ struct sockaddr_in HTTPServer::setDefaultAddr(int index)
 
 int HTTPServer::process()
 {
+    int     max_sd;
+    int     rc;
+    int     error;
+    fd_set  master_set;
+    fd_set  working_set;
+    
+    FD_ZERO(&master_set);
+    max_sd = this->sockets[0].fd;
+    FD_SET(this->sockets[0].fd, &master_set);
+    do
+    {
+        memcpy(&working_set, &master_set, sizeof(master_set));
+        std::cout << "Waiting on select()..." << std::endl;
+        rc = select(max_sd + 1, &working_set, NULL, NULL, NULL);
+        if (rc < 0)
+        {
+            error = errno;
+            return (error);
+        }
+    }
+    while (true);
     return (0);   
 }
 
