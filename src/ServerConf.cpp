@@ -11,15 +11,15 @@ ServerConf::~ServerConf() {}
 void ServerConf::getValuesFrom(std::string file)
 {
 	/* Port */
-	this->port.push_back(get_int_value("port", file));//multiple value ?
+	this->port = get_multiple_int_value("port", file);
     /* Host */
 	this->host = get_string_value("host", file);
 	/* serverNames */
-	this->serverNames.push_back(get_string_value("server_name", file));//multiple value ?
+	this->serverNames = get_multiple_string_value("server_name", file);
     /* Default Server */
     this->defaultServer = get_string_value("defaultServer", file);
     /* Error Page */
-    this->errorPage = get_string_value("error_page", file);
+	this->errorPage = get_multiple_string_value("error_page", file);
     /* Max Request Body Size */
     this->maxRequestBodySize = get_int_value("client_body_limit", file);
     /* Allowed Methods */
@@ -40,6 +40,8 @@ void ServerConf::getValuesFrom(std::string file)
     /* Upload Directory */
     this->uploadDirectory = get_string_value("uploadDirectory", file);
 }
+
+/* int */
 
 int ServerConf::get_int_value(std::string attribute, std::string file)
 {
@@ -71,38 +73,44 @@ int ServerConf::get_int_value(std::string attribute, std::string file)
 	return (std::atoi(nb.c_str()));
 }
 
-/********************************************************
-
-int ServerConf::get_multiple_int_value(std::string attribute, std::string file)
+std::vector<int> ServerConf::get_multiple_int_value(std::string attribute, std::string file)
 {
 	std::size_t	found;
 	std::string	error;
 	std::string	nb;
+	std::vector<int> nbVector;
 
 	found = file.find(attribute);
 	error = "Missing value or incorrect writing for attribute : " + attribute;
 	if (found == std::string::npos)
-		return (std::atoi(giveDefaultValue(attribute).c_str()));
-	while(file[found] && file[found] != '"') //stop if endl ?
+		nbVector.push_back(std::atoi(giveDefaultValue(attribute).c_str()));
+	while (found != std::string::npos)
 	{
-		if (file[found] != ' ')
+		found = found + attribute.length();
+		while(file[found] && file[found] != '"') //stop if endl ?
+		{
+			if (file[found] != ' ')
+				throw (std::runtime_error(error));
+			found++;
+		}
+		if (!file[found])
 			throw (std::runtime_error(error));
 		found++;
+		while(file[found] && file[found] != '"')
+		{
+			nb.push_back(file[found]);//check if string is correct ?
+			found++;
+		}
+		if (file[found] != '"')
+			throw (std::runtime_error(error));
+		nbVector.push_back(std::atoi(nb.c_str()));
+		nb = "";
+		found = file.find(attribute, found);
 	}
-	if (!file[found])
-		throw (std::runtime_error(error));
-	found++;
-	while(file[found] && file[found] != '"')
-	{
-		nb.push_back(file[found]);//check if string is correct ?
-		found++;
-	}
-	if (file[found] != '"')
-		throw (std::runtime_error(error));
-	return (std::atoi(nb.c_str()));
+	return (nbVector);
 }
 
-********************************************************/
+/* Bool */
 
 bool ServerConf::get_bool_value(std::string attribute, std::string file)
 {
@@ -136,6 +144,8 @@ bool ServerConf::get_bool_value(std::string attribute, std::string file)
 	return (false);
 }
 
+/* String */
+
 std::string ServerConf::get_string_value(std::string attribute, std::string file)
 {
 	std::size_t	found;
@@ -165,6 +175,45 @@ std::string ServerConf::get_string_value(std::string attribute, std::string file
 		throw (std::runtime_error(error));
 	return (str);
 }
+
+std::vector<std::string> ServerConf::get_multiple_string_value(std::string attribute, std::string file)
+{
+	std::size_t	found;
+	std::string	error;
+	std::string	str;
+	std::vector<std::string> strVector;
+
+	found = file.find(attribute);
+	error = "Missing value or incorrect writing for attribute : " + attribute;
+	if (found == std::string::npos)
+		strVector.push_back(giveDefaultValue(attribute));
+	while (found != std::string::npos)
+	{
+		found = found + attribute.length();
+		while(file[found] && file[found] != '"') //stop if endl ?
+		{
+			if (file[found] != ' ')
+				throw (std::runtime_error(error));
+			found++;
+		}
+		if (!file[found])
+			throw (std::runtime_error(error));
+		found++;
+		while(file[found] && file[found] != '"')
+		{
+			str.push_back(file[found]);//check if string is correct ?
+			found++;
+		}
+		if (file[found] != '"')
+			throw (std::runtime_error(error));
+		strVector.push_back(str);
+		str = "";
+		found = file.find(attribute, found);
+	}
+	return (strVector);
+}
+
+/* Default */
 
 std::string ServerConf::giveDefaultValue(std::string attribute)
 {
@@ -211,7 +260,9 @@ void ServerConf::printAll()
     for (std::size_t i = 0; i < this->getServerNames().size(); i++)
         std::cout << "[" << i + 1 << "] - Server Name: " << this->getServerNames().at(i) << std::endl;
     std::cout << "Default Server: " << this->getDefaultServer() << std::endl;
-    std::cout << "Error Page: " << this->getErrorPage() << std::endl;
+    //std::cout << "Error Page: " << this->getErrorPage() << std::endl;
+	for (std::size_t i = 0; i < this->getErrorPage().size(); i++)
+        std::cout << "[" << i + 1 << "] - Error Page: " << this->getErrorPage().at(i) << std::endl;
     std::cout << "Max Request Body Size: " << this->getMaxRequestBodySize() << std::endl;
     if (this->getAllowedMethods().size() == 0)
         std::cout << "[1] - Allowed Method: Nothing" << std::endl;
@@ -231,7 +282,7 @@ std::vector<int>			ServerConf::getPort() { return (this->port); }
 std::string					ServerConf::getHost() { return (this->host); }
 std::vector<std::string>	ServerConf::getServerNames() { return (this->serverNames); }
 std::string					ServerConf::getDefaultServer() { return (this->defaultServer); }
-std::string					ServerConf::getErrorPage() { return (this->errorPage); }
+std::vector<std::string>	ServerConf::getErrorPage() { return (this->errorPage); }
 int							ServerConf::getMaxRequestBodySize() { return (this->maxRequestBodySize); }
 std::vector<std::string>	ServerConf::getAllowedMethods() { return (this->allowedMethods); }
 std::string					ServerConf::getRedirection() { return (this->redirection); }

@@ -28,8 +28,10 @@ class ServerConf
 		/* Assign values */
 		void						getValuesFrom(std::string file);
 		int							get_int_value(std::string attribute, std::string file);
+		std::vector<int>			get_multiple_int_value(std::string attribute, std::string file);
 		bool						get_bool_value(std::string attribute, std::string file);
 		std::string					get_string_value(std::string attribute, std::string file);
+		std::vector<std::string>	get_multiple_string_value(std::string attribute, std::string file);
 		std::string					giveDefaultValue(std::string attribute);
 
         /* Debug */
@@ -40,7 +42,7 @@ class ServerConf
         std::string                 getHost();
         std::vector<std::string>    getServerNames();
         std::string                 getDefaultServer();
-        std::string                 getErrorPage();
+        std::vector<std::string>    getErrorPage();
         int                         getMaxRequestBodySize();
         std::vector<std::string>    getAllowedMethods();
         std::string                 getRedirection();
@@ -57,7 +59,7 @@ class ServerConf
         std::string                 host;
         std::vector<std::string>    serverNames;
         std::string                 defaultServer;
-        std::string                 errorPage;
+        std::vector<std::string>	errorPage;
         int                         maxRequestBodySize;
         std::vector<std::string>    allowedMethods;
         std::string                 redirection;
