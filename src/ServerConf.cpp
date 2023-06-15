@@ -51,12 +51,16 @@ int ServerConf::get_int_value(std::string attribute, std::string file)
 	error = "Missing value or incorrect writing for attribute : " + attribute;
 	if (found == std::string::npos)
 		return (std::atoi(giveDefaultValue(attribute).c_str()));
+	found = found + attribute.length();
 	while(file[found] && file[found] != '"') //stop if endl ?
+	{
+		if (file[found] != ' ')
+			throw (std::runtime_error(error));
 		found++;
-	if (file[found] == '"')
-		found++;
-	else 
+	}
+	if (!file[found])
 		throw (std::runtime_error(error));
+	found++;
 	while(file[found] && file[found] != '"')
 	{
 		nb.push_back(file[found]);//check if string is correct ?
@@ -66,6 +70,39 @@ int ServerConf::get_int_value(std::string attribute, std::string file)
 		throw (std::runtime_error(error));
 	return (std::atoi(nb.c_str()));
 }
+
+/********************************************************
+
+int ServerConf::get_multiple_int_value(std::string attribute, std::string file)
+{
+	std::size_t	found;
+	std::string	error;
+	std::string	nb;
+
+	found = file.find(attribute);
+	error = "Missing value or incorrect writing for attribute : " + attribute;
+	if (found == std::string::npos)
+		return (std::atoi(giveDefaultValue(attribute).c_str()));
+	while(file[found] && file[found] != '"') //stop if endl ?
+	{
+		if (file[found] != ' ')
+			throw (std::runtime_error(error));
+		found++;
+	}
+	if (!file[found])
+		throw (std::runtime_error(error));
+	found++;
+	while(file[found] && file[found] != '"')
+	{
+		nb.push_back(file[found]);//check if string is correct ?
+		found++;
+	}
+	if (file[found] != '"')
+		throw (std::runtime_error(error));
+	return (std::atoi(nb.c_str()));
+}
+
+********************************************************/
 
 bool ServerConf::get_bool_value(std::string attribute, std::string file)
 {
@@ -77,12 +114,16 @@ bool ServerConf::get_bool_value(std::string attribute, std::string file)
 	error = "Missing value or incorrect writing for attribute : " + attribute;
 	if (found == std::string::npos)
 		return (false);
+	found = found + attribute.length();
 	while(file[found] && file[found] != '"') //stop if endl ?
+	{
+		if (file[found] != ' ')
+			throw (std::runtime_error(error));
 		found++;
-	if (file[found] == '"')
-		found++;
-	else 
+	}
+	if (!file[found])
 		throw (std::runtime_error(error));
+	found++;
 	while(file[found] && file[found] != '"')
 	{
 		str.push_back(file[found]);//check if string is correct ?
@@ -105,12 +146,16 @@ std::string ServerConf::get_string_value(std::string attribute, std::string file
 	error = "Missing value or incorrect writing for attribute : " + attribute;
 	if (found == std::string::npos)
 		return (giveDefaultValue(attribute));
+	found = found + attribute.length();
 	while(file[found] && file[found] != '"') //stop if endl ?
+	{
+		if (file[found] != ' ')
+			throw (std::runtime_error(error));
 		found++;
-	if (file[found] == '"')
-		found++;
-	else 
+	}
+	if (!file[found])
 		throw (std::runtime_error(error));
+	found++;
 	while(file[found] && file[found] != '"')
 	{
 		str.push_back(file[found]);//check if string is correct ?

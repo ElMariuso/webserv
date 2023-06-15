@@ -36,7 +36,6 @@ class ServerConf
         void                        printAll();
 
         /* Getters */
-        //std::string                 getConfigFile();
         std::vector<int>            getPort();
         std::string                 getHost();
         std::vector<std::string>    getServerNames();
@@ -54,7 +53,6 @@ class ServerConf
 
     /* Attributes *************************************************************** */
     protected:
-        //std::string                 configFile;
         std::vector<int>            port;
         std::string                 host;
         std::vector<std::string>    serverNames;
