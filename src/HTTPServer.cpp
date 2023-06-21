@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 13:36:01 by root              #+#    #+#             */
-/*   Updated: 2023/06/08 00:56:54 by root             ###   ########.fr       */
+/*   Updated: 2023/06/21 12:51:49 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ struct sockaddr_in HTTPServer::setDefaultAddr(int index)
 {
     struct sockaddr_in  ret;
 
-    memset((char *)&ret, 0, sizeof(ret));
+    Utils::ft_memset((char *)&ret, 0, sizeof(ret));
     ret.sin_family = AF_INET;
     ret.sin_port = htons(this->port[index]);
     if (this->host == "localhost")
@@ -99,7 +99,7 @@ int HTTPServer::process()
     FD_SET(this->sockets[0].fd, &master_set);
     do
     {
-        memcpy(&working_set, &master_set, sizeof(master_set));
+        Utils::ft_memcpy(&working_set, &master_set, sizeof(master_set));
         std::cout << "Waiting on select()..." << std::endl;
         rc = select(max_sd + 1, &working_set, NULL, NULL, NULL);
         if (rc < 0)
