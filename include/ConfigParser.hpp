@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:46:59 by root              #+#    #+#             */
-/*   Updated: 2023/06/13 13:06:07 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/17 13:59:58 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@
 
 # include <cstdlib>
 # include <cctype>
-# include <stdexcept>
 # include "ServerConf.hpp"
 
 /* Class ******************************************************************** */

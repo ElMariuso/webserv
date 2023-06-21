@@ -22,23 +22,52 @@ void ServerConf::getValuesFrom(std::string file)
 	this->errorPage = get_multiple_string_value("error_page", file);
     /* Max Request Body Size */
     this->maxRequestBodySize = get_int_value("client_body_limit", file);
-    /* Allowed Methods */
-    this->allowedMethods.push_back("POST");//allowed method of limit_exept
-    this->allowedMethods.push_back("GET");//multiple value ?
-    /* Redirection */
-    this->redirection = get_string_value("redirection", file);
-    /* Root Directory */
-    this->rootDirectory = get_string_value("rootDirectory", file);
-    /* Enable Directory Listing */
-    this->enableDirectoryListing = get_bool_value("enableDirectoryListing", file);
-    /* Default File */
-    this->defaultFile = get_string_value("defaultFile", file);
-    /* CGI Extension */
-    this->cgiExtension = get_string_value("cgiExtension", file);
-    /* CGI Path */
-    this->cgiPath = get_string_value("cgiPath", file);
-    /* Upload Directory */
-    this->uploadDirectory = get_string_value("uploadDirectory", file);
+
+	get_all_routes(file, 0);
+	//this->maxRequestBodySize.getRoutesFrom(file);
+    // /* Allowed Methods */
+    // this->allowedMethods.push_back("POST");//allowed method of limit_exept
+    // this->allowedMethods.push_back("GET");//multiple value ?
+    // /* Redirection */
+    // this->redirection = get_string_value("redirection", file);
+    // /* Root Directory */
+    // this->rootDirectory = get_string_value("rootDirectory", file);
+    // /* Enable Directory Listing */
+    // this->enableDirectoryListing = get_bool_value("enableDirectoryListing", file);
+ 
+    // /* Default File */
+    // this->defaultFile = get_string_value("defaultFile", file);
+    // /* CGI Extension */
+    // this->cgiExtension = get_string_value("cgiExtension", file);
+    // /* CGI Path */
+    // this->cgiPath = get_string_value("cgiPath", file);
+    // /* Upload Directory */
+    // this->uploadDirectory = get_string_value("uploadDirectory", file);
+}
+
+void ServerConf::get_all_routes(std::string file, int start)
+{
+	std::size_t	found;
+	std::string routeBlock;
+	Routes		newRoute;
+
+	found = file.find("location {", start);
+	if (found == std::string::npos && start == 0)
+	{
+		newRoute.getDefaultRoutes();
+		this->routes.push_back(newRoute);
+	}
+	if (found == std::string::npos)
+		return ;
+	found = found + 10;
+	while (file[found] && file[found] != '}')
+	{
+		routeBlock.push_back(file[found]);
+		found++;
+	}
+	newRoute.getRouteFrom(routeBlock);
+	this->routes.push_back(newRoute);
+	get_all_routes(file, found);
 }
 
 /* int */
@@ -108,40 +137,6 @@ std::vector<int> ServerConf::get_multiple_int_value(std::string attribute, std::
 		found = file.find(attribute, found);
 	}
 	return (nbVector);
-}
-
-/* Bool */
-
-bool ServerConf::get_bool_value(std::string attribute, std::string file)
-{
-	std::size_t	found;
-	std::string	error;
-	std::string	str;
-
-	found = file.find(attribute);
-	error = "Missing value or incorrect writing for attribute : " + attribute;
-	if (found == std::string::npos)
-		return (false);
-	found = found + attribute.length();
-	while(file[found] && file[found] != '"') //stop if endl ?
-	{
-		if (file[found] != ' ')
-			throw (std::runtime_error(error));
-		found++;
-	}
-	if (!file[found])
-		throw (std::runtime_error(error));
-	found++;
-	while(file[found] && file[found] != '"')
-	{
-		str.push_back(file[found]);//check if string is correct ?
-		found++;
-	}
-	if (file[found] != '"')
-		throw (std::runtime_error(error));
-	if (str == "true")
-		return (true);
-	return (false);
 }
 
 /* String */
@@ -261,20 +256,31 @@ void ServerConf::printAll()
         std::cout << "[" << i + 1 << "] - Server Name: " << this->getServerNames().at(i) << std::endl;
     std::cout << "Default Server: " << this->getDefaultServer() << std::endl;
     //std::cout << "Error Page: " << this->getErrorPage() << std::endl;
+	if (this->getErrorPage().size() == 0)
+        std::cout << "[1] - Error Page: Nothing" << std::endl;
 	for (std::size_t i = 0; i < this->getErrorPage().size(); i++)
         std::cout << "[" << i + 1 << "] - Error Page: " << this->getErrorPage().at(i) << std::endl;
     std::cout << "Max Request Body Size: " << this->getMaxRequestBodySize() << std::endl;
-    if (this->getAllowedMethods().size() == 0)
-        std::cout << "[1] - Allowed Method: Nothing" << std::endl;
-    for (std::size_t i = 0; i < this->getAllowedMethods().size(); i++)
-        std::cout << "[" << i + 1 << "] - Allowed Method: " << this->getAllowedMethods().at(i) << std::endl;
-    std::cout << "Redirection: " << this->getRedirection() << std::endl;
-    std::cout << "Root Directory: " << this->getRootDirectory() << std::endl;
-    std::cout << "Enable Directory Listing: " << this->getEnableDirectoryListing() << std::endl;
-    std::cout << "Default File: " << this->getDefaultFile() << std::endl;
-    std::cout << "CGI Extension: " << this->getCgiExtension() << std::endl;
-    std::cout << "CGI Path: " << this->getCgiPath() << std::endl;
-    std::cout << "Upload Directory: " << this->getUploadDirectory() << std::endl;
+    
+	if (this->getRoute().size() == 0)
+        std::cout << "[1] - Route: Nothing" << std::endl;
+	for (std::size_t i = 0; i < this->getRoute().size(); i++)
+	{
+		std::cout << "[" << i + 1 << "] - Route:";
+		this->getRoute().at(i).printAll();
+		std::cout << std::endl;
+	}
+	// if (this->getAllowedMethods().size() == 0)
+    //     std::cout << "[1] - Allowed Method: Nothing" << std::endl;
+    // for (std::size_t i = 0; i < this->getAllowedMethods().size(); i++)
+    //     std::cout << "[" << i + 1 << "] - Allowed Method: " << this->getAllowedMethods().at(i) << std::endl;
+    // std::cout << "Redirection: " << this->getRedirection() << std::endl;
+    // std::cout << "Root Directory: " << this->getRootDirectory() << std::endl;
+    // std::cout << "Enable Directory Listing: " << this->getEnableDirectoryListing() << std::endl;
+    // std::cout << "Default File: " << this->getDefaultFile() << std::endl;
+    // std::cout << "CGI Extension: " << this->getCgiExtension() << std::endl;
+    // std::cout << "CGI Path: " << this->getCgiPath() << std::endl;
+    // std::cout << "Upload Directory: " << this->getUploadDirectory() << std::endl;
 }
 
 /* Getters */
@@ -284,11 +290,13 @@ std::vector<std::string>	ServerConf::getServerNames() { return (this->serverName
 std::string					ServerConf::getDefaultServer() { return (this->defaultServer); }
 std::vector<std::string>	ServerConf::getErrorPage() { return (this->errorPage); }
 int							ServerConf::getMaxRequestBodySize() { return (this->maxRequestBodySize); }
-std::vector<std::string>	ServerConf::getAllowedMethods() { return (this->allowedMethods); }
-std::string					ServerConf::getRedirection() { return (this->redirection); }
-std::string					ServerConf::getRootDirectory() { return (this->rootDirectory); }
-bool						ServerConf::getEnableDirectoryListing() { return (this->enableDirectoryListing); }
-std::string 				ServerConf::getDefaultFile() { return (this->defaultFile); }
-std::string					ServerConf::getCgiExtension() { return (this->cgiExtension); }
-std::string 				ServerConf::getCgiPath() { return (this->cgiPath); }
-std::string					ServerConf::getUploadDirectory() { return (this->uploadDirectory); }
+
+std::vector<Routes>			ServerConf::getRoute() { return (this->routes); }
+// std::vector<std::string>	ServerConf::getAllowedMethods() { return (this->allowedMethods); }
+// std::string					ServerConf::getRedirection() { return (this->redirection); }
+// std::string					ServerConf::getRootDirectory() { return (this->rootDirectory); }
+// bool						ServerConf::getEnableDirectoryListing() { return (this->enableDirectoryListing); }
+// std::string 				ServerConf::getDefaultFile() { return (this->defaultFile); }
+// std::string					ServerConf::getCgiExtension() { return (this->cgiExtension); }
+// std::string 				ServerConf::getCgiPath() { return (this->cgiPath); }
+// std::string					ServerConf::getUploadDirectory() { return (this->uploadDirectory); }

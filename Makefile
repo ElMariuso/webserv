@@ -6,7 +6,7 @@
 #    By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 12:54:28 by root              #+#    #+#              #
-#    Updated: 2023/06/13 13:09:35 by bvernimm         ###   ########.fr        #
+#    Updated: 2023/06/21 10:17:40 by bvernimm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC_DIR = src
 SRCS = $(wildcard  $(SRC_DIR)/main.cpp) \
 		$(wildcard $(SRC_DIR)/ConfigParser.cpp) \
 		$(wildcard $(SRC_DIR)/ServerConf.cpp) \
+		$(wildcard $(SRC_DIR)/Routes.cpp) \
 		$(wildcard $(SRC_DIR)/HTTPServer.cpp) \
 
 OBJ_DIR	= objs
