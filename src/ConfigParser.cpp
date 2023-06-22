@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/13 13:01:37 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/22 10:16:32 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,6 @@ int ConfigParser::configParsing()
     buffer = this->readFile(this->configFile);
     if (buffer == "")
         return (-1);
-	//std::cout << "\n" << buffer << "\n" << std::endl;
-    // if (this->isInRightFormat() == false)
-    //     return (-2);
 	get_value_from_file(buffer, 0);
     return (0);
 }
@@ -114,20 +111,14 @@ void ConfigParser::printAll()
 {
 	std::cout << "Config File: " << this->getConfigFile() << std::endl;
 	std::cout << std::endl;
-	
-	std::cout << "Server : " << std::endl;
-	serverData[0].printAll();
-	std::cout << std::endl;
-	
-	std::cout << "Server : " << std::endl;
-	serverData[1].printAll();
-	std::cout << std::endl;
-	// for (int i = 0; serverData[i]; i++)
-	// {
-	// 	std::cout << "Server : " << std::endl;
-	// 	serverData[i].printAll();
-	// 	std::cout << std::endl;
-	// }
+	if (this->serverData.size() == 0)
+        std::cout << "No server block" << std::endl;
+	for (std::size_t i = 0; i < this->serverData.size(); i++)
+	{
+		std::cout << "[" << i + 1 << "] - Server:" << std::endl;
+		this->serverData.at(i).printAll();
+		std::cout << std::endl;
+	}
 }
 
 /* Getters */

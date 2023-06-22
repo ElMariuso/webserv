@@ -22,27 +22,8 @@ void ServerConf::getValuesFrom(std::string file)
 	this->errorPage = get_multiple_string_value("error_page", file);
     /* Max Request Body Size */
     this->maxRequestBodySize = get_int_value("client_body_limit", file);
-
+	/* Routes */
 	get_all_routes(file, 0);
-	//this->maxRequestBodySize.getRoutesFrom(file);
-    // /* Allowed Methods */
-    // this->allowedMethods.push_back("POST");//allowed method of limit_exept
-    // this->allowedMethods.push_back("GET");//multiple value ?
-    // /* Redirection */
-    // this->redirection = get_string_value("redirection", file);
-    // /* Root Directory */
-    // this->rootDirectory = get_string_value("rootDirectory", file);
-    // /* Enable Directory Listing */
-    // this->enableDirectoryListing = get_bool_value("enableDirectoryListing", file);
- 
-    // /* Default File */
-    // this->defaultFile = get_string_value("defaultFile", file);
-    // /* CGI Extension */
-    // this->cgiExtension = get_string_value("cgiExtension", file);
-    // /* CGI Path */
-    // this->cgiPath = get_string_value("cgiPath", file);
-    // /* Upload Directory */
-    // this->uploadDirectory = get_string_value("uploadDirectory", file);
 }
 
 void ServerConf::get_all_routes(std::string file, int start)
@@ -83,7 +64,7 @@ int ServerConf::get_int_value(std::string attribute, std::string file)
 	if (found == std::string::npos)
 		return (std::atoi(giveDefaultValue(attribute).c_str()));
 	found = found + attribute.length();
-	while(file[found] && file[found] != '"') //stop if endl ?
+	while(file[found] && file[found] != '"')
 	{
 		if (file[found] != ' ')
 			throw (std::runtime_error(error));
@@ -94,7 +75,7 @@ int ServerConf::get_int_value(std::string attribute, std::string file)
 	found++;
 	while(file[found] && file[found] != '"')
 	{
-		nb.push_back(file[found]);//check if string is correct ?
+		nb.push_back(file[found]);
 		found++;
 	}
 	if (file[found] != '"')
@@ -116,7 +97,7 @@ std::vector<int> ServerConf::get_multiple_int_value(std::string attribute, std::
 	while (found != std::string::npos)
 	{
 		found = found + attribute.length();
-		while(file[found] && file[found] != '"') //stop if endl ?
+		while(file[found] && file[found] != '"')
 		{
 			if (file[found] != ' ')
 				throw (std::runtime_error(error));
@@ -127,7 +108,7 @@ std::vector<int> ServerConf::get_multiple_int_value(std::string attribute, std::
 		found++;
 		while(file[found] && file[found] != '"')
 		{
-			nb.push_back(file[found]);//check if string is correct ?
+			nb.push_back(file[found]);
 			found++;
 		}
 		if (file[found] != '"')
@@ -152,7 +133,7 @@ std::string ServerConf::get_string_value(std::string attribute, std::string file
 	if (found == std::string::npos)
 		return (giveDefaultValue(attribute));
 	found = found + attribute.length();
-	while(file[found] && file[found] != '"') //stop if endl ?
+	while(file[found] && file[found] != '"')
 	{
 		if (file[found] != ' ')
 			throw (std::runtime_error(error));
@@ -163,7 +144,7 @@ std::string ServerConf::get_string_value(std::string attribute, std::string file
 	found++;
 	while(file[found] && file[found] != '"')
 	{
-		str.push_back(file[found]);//check if string is correct ?
+		str.push_back(file[found]);
 		found++;
 	}
 	if (file[found] != '"')
@@ -185,7 +166,7 @@ std::vector<std::string> ServerConf::get_multiple_string_value(std::string attri
 	while (found != std::string::npos)
 	{
 		found = found + attribute.length();
-		while(file[found] && file[found] != '"') //stop if endl ?
+		while(file[found] && file[found] != '"')
 		{
 			if (file[found] != ' ')
 				throw (std::runtime_error(error));
@@ -196,7 +177,7 @@ std::vector<std::string> ServerConf::get_multiple_string_value(std::string attri
 		found++;
 		while(file[found] && file[found] != '"')
 		{
-			str.push_back(file[found]);//check if string is correct ?
+			str.push_back(file[found]);
 			found++;
 		}
 		if (file[found] != '"')
@@ -224,7 +205,7 @@ std::string ServerConf::giveDefaultValue(std::string attribute)
 		return ("error.html");
 	if (attribute == "maxRequestBodySize")
 		return ("1048576");
-	if (attribute == "allowedMethods")//multiple ?
+	if (attribute == "allowedMethods")
 		return ("GET");
 	if (attribute == "redirection")
 		return ("");
@@ -255,13 +236,11 @@ void ServerConf::printAll()
     for (std::size_t i = 0; i < this->getServerNames().size(); i++)
         std::cout << "[" << i + 1 << "] - Server Name: " << this->getServerNames().at(i) << std::endl;
     std::cout << "Default Server: " << this->getDefaultServer() << std::endl;
-    //std::cout << "Error Page: " << this->getErrorPage() << std::endl;
 	if (this->getErrorPage().size() == 0)
         std::cout << "[1] - Error Page: Nothing" << std::endl;
 	for (std::size_t i = 0; i < this->getErrorPage().size(); i++)
         std::cout << "[" << i + 1 << "] - Error Page: " << this->getErrorPage().at(i) << std::endl;
     std::cout << "Max Request Body Size: " << this->getMaxRequestBodySize() << std::endl;
-    
 	if (this->getRoute().size() == 0)
         std::cout << "[1] - Route: Nothing" << std::endl;
 	for (std::size_t i = 0; i < this->getRoute().size(); i++)
@@ -270,17 +249,6 @@ void ServerConf::printAll()
 		this->getRoute().at(i).printAll();
 		std::cout << std::endl;
 	}
-	// if (this->getAllowedMethods().size() == 0)
-    //     std::cout << "[1] - Allowed Method: Nothing" << std::endl;
-    // for (std::size_t i = 0; i < this->getAllowedMethods().size(); i++)
-    //     std::cout << "[" << i + 1 << "] - Allowed Method: " << this->getAllowedMethods().at(i) << std::endl;
-    // std::cout << "Redirection: " << this->getRedirection() << std::endl;
-    // std::cout << "Root Directory: " << this->getRootDirectory() << std::endl;
-    // std::cout << "Enable Directory Listing: " << this->getEnableDirectoryListing() << std::endl;
-    // std::cout << "Default File: " << this->getDefaultFile() << std::endl;
-    // std::cout << "CGI Extension: " << this->getCgiExtension() << std::endl;
-    // std::cout << "CGI Path: " << this->getCgiPath() << std::endl;
-    // std::cout << "Upload Directory: " << this->getUploadDirectory() << std::endl;
 }
 
 /* Getters */
@@ -290,13 +258,4 @@ std::vector<std::string>	ServerConf::getServerNames() { return (this->serverName
 std::string					ServerConf::getDefaultServer() { return (this->defaultServer); }
 std::vector<std::string>	ServerConf::getErrorPage() { return (this->errorPage); }
 int							ServerConf::getMaxRequestBodySize() { return (this->maxRequestBodySize); }
-
 std::vector<Routes>			ServerConf::getRoute() { return (this->routes); }
-// std::vector<std::string>	ServerConf::getAllowedMethods() { return (this->allowedMethods); }
-// std::string					ServerConf::getRedirection() { return (this->redirection); }
-// std::string					ServerConf::getRootDirectory() { return (this->rootDirectory); }
-// bool						ServerConf::getEnableDirectoryListing() { return (this->enableDirectoryListing); }
-// std::string 				ServerConf::getDefaultFile() { return (this->defaultFile); }
-// std::string					ServerConf::getCgiExtension() { return (this->cgiExtension); }
-// std::string 				ServerConf::getCgiPath() { return (this->cgiPath); }
-// std::string					ServerConf::getUploadDirectory() { return (this->uploadDirectory); }

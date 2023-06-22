@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 13:59:27 by bvernimm          #+#    #+#             */
-/*   Updated: 2023/06/21 10:21:39 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/22 10:07:34 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ class Routes
         bool                        enableDirectoryListing;
 		std::string                 defaultFile;
         std::string                 cgiExtension;
-        std::string                 cgiPath;//post et get thingy ? 
+        std::string                 cgiPath;
         std::string                 uploadDirectory;
 };
 

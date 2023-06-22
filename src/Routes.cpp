@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 14:08:15 by bvernimm          #+#    #+#             */
-/*   Updated: 2023/06/21 10:25:18 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/22 10:16:17 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,7 @@ void Routes::getRouteFrom(std::string file)
 {
 	/* route */
 	this->route = get_string_value("route", file);
-
 	/* Allowed Methods */
-    // this->allowedMethods.push_back("POST");//allowed method or limit_exept ?
-    // this->allowedMethods.push_back("GET");//multiple value ?
 	this->allowedMethods = get_multiple_string_value("allowed_methods", file);
     /* Redirection */
     this->redirection = get_string_value("redirection", file);
@@ -56,7 +53,7 @@ void Routes::getDefaultRoutes()
     /* Root Directory */
     this->rootDirectory = "";
     /* Enable Directory Listing */
-    this->enableDirectoryListing = "";
+    this->enableDirectoryListing = false;
 	/* Default File */
     this->defaultFile = "";
     /* CGI Extension */
@@ -72,8 +69,8 @@ std::string Routes::giveDefaultValue(std::string attribute)
 	if (attribute == "route")
 		throw (std::runtime_error("no value for parameter 'route'"));
 	if (attribute == "allowed_methods")
-		return ("GET");//sure about that ?
-	if (attribute == "redirection")//what put here
+		return ("GET");
+	if (attribute == "redirection")
 		return ("");
 	if (attribute == "root_directory")
 		return ("");
@@ -112,7 +109,7 @@ bool Routes::get_bool_value(std::string attribute, std::string file)
 	found++;
 	while(file[found] && file[found] != '"')
 	{
-		str.push_back(file[found]);//check if string is correct ?
+		str.push_back(file[found]);
 		found++;
 	}
 	if (file[found] != '"')
@@ -144,7 +141,7 @@ std::string Routes::get_string_value(std::string attribute, std::string file)
 	found++;
 	while(file[found] && file[found] != '"')
 	{
-		str.push_back(file[found]);//check if string is correct ?
+		str.push_back(file[found]);
 		found++;
 	}
 	if (file[found] != '"')
@@ -177,7 +174,7 @@ std::vector<std::string> Routes::get_multiple_string_value(std::string attribute
 		found++;
 		while(file[found] && file[found] != '"')
 		{
-			str.push_back(file[found]);//check if string is correct ?
+			str.push_back(file[found]);
 			found++;
 		}
 		if (file[found] != '"')
@@ -200,8 +197,11 @@ void Routes::printAll()
         std::cout << "[" << i + 1 << "] - Allowed Method: " << this->getAllowedMethods().at(i) << std::endl;
     std::cout << "Redirection: " << this->getRedirection() << std::endl;
     std::cout << "Root Directory: " << this->getRootDirectory() << std::endl;
-    std::cout << "Enable Directory Listing: " << this->getEnableDirectoryListing() << std::endl;
-    std::cout << "Default File: " << this->getDefaultFile() << std::endl;
+    if (this->getEnableDirectoryListing() == 0)
+		std::cout << "Enable Directory Listing: false" << std::endl;
+	else
+		std::cout << "Enable Directory Listing: true" << std::endl;
+	std::cout << "Default File: " << this->getDefaultFile() << std::endl;
     std::cout << "CGI Extension: " << this->getCgiExtension() << std::endl;
     std::cout << "CGI Path: " << this->getCgiPath() << std::endl;
     std::cout << "Upload Directory: " << this->getUploadDirectory() << std::endl;
