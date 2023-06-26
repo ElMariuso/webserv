@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 13:59:21 by bvernimm          #+#    #+#             */
-/*   Updated: 2023/06/22 10:07:52 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/26 11:58:20 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sstream>
 # include <stdexcept>
 # include <vector>
+# include <map>
 
 # include <cstdlib>
 # include <cctype>
@@ -44,6 +45,7 @@ class ServerConf
 		std::vector<int>			get_multiple_int_value(std::string attribute, std::string file);
 		std::string					get_string_value(std::string attribute, std::string file);
 		std::vector<std::string>	get_multiple_string_value(std::string attribute, std::string file);
+		std::map<int, std::string>	get_int_string_map(std::string attribute, std::string file);
 		std::string					giveDefaultValue(std::string attribute);
 
         /* Debug */
@@ -54,7 +56,7 @@ class ServerConf
         std::string                 getHost();
         std::vector<std::string>    getServerNames();
         std::string                 getDefaultServer();
-        std::vector<std::string>    getErrorPage();
+		std::map<int, std::string>	getErrorPage();
         int                         getMaxRequestBodySize();	
 		std::vector<Routes>			getRoute();
 
@@ -64,7 +66,7 @@ class ServerConf
         std::string                 host;
         std::vector<std::string>    serverNames;
         std::string                 defaultServer;
-        std::vector<std::string>	errorPage;
+		std::map<int, std::string>	errorPage;
         int                         maxRequestBodySize;
 		std::vector<Routes>			routes;
 };

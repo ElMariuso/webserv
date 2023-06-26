@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:21:49 by bvernimm          #+#    #+#             */
-/*   Updated: 2023/06/22 10:21:52 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/26 11:58:13 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void ServerConf::getValuesFrom(std::string file)
     /* Default Server */
     this->defaultServer = get_string_value("defaultServer", file);
     /* Error Page */
-	this->errorPage = get_multiple_string_value("error_page", file);
+	this->errorPage = get_int_string_map("error_page", file);
     /* Max Request Body Size */
     this->maxRequestBodySize = get_int_value("client_body_limit", file);
 	/* Routes */
@@ -201,6 +201,63 @@ std::vector<std::string> ServerConf::get_multiple_string_value(std::string attri
 	return (strVector);
 }
 
+std::map<int, std::string> ServerConf::get_int_string_map(std::string attribute, std::string file)
+{
+	std::size_t	found;
+	std::string	error;
+	std::string	str;
+	int			nb;
+	std::map<int, std::string> map;
+
+	found = file.find(attribute);
+	error = "Missing value or incorrect writing for attribute : " + attribute;
+	if (found == std::string::npos)
+		return (map);
+	while (found != std::string::npos)
+	{
+		found = found + attribute.length();
+		while(file[found] && file[found] != '"')
+		{
+			if (file[found] != ' ')
+				throw (std::runtime_error(error));
+			found++;
+		}
+		if (!file[found])
+			throw (std::runtime_error(error));
+		found++;
+		while(file[found] && file[found] != '"')
+		{
+			str.push_back(file[found]);
+			found++;
+		}
+		if (file[found] != '"')
+			throw (std::runtime_error(error));
+		nb = std::atoi(str.c_str());
+		found++;
+		str = "";
+		while(file[found] && file[found] != '"')
+		{
+			if (file[found] != ' ')
+				throw (std::runtime_error(error));
+			found++;
+		}
+		if (!file[found])
+			throw (std::runtime_error(error));
+		found++;
+		while(file[found] && file[found] != '"')
+		{
+			str.push_back(file[found]);
+			found++;
+		}
+		if (file[found] != '"')
+			throw (std::runtime_error(error));
+		map.insert(std::pair<int,std::string>(nb,str));
+		str = "";
+		found = file.find(attribute, found);
+	}
+	return (map);
+}
+
 /* Default */
 
 std::string ServerConf::giveDefaultValue(std::string attribute)
@@ -249,9 +306,9 @@ void ServerConf::printAll()
         std::cout << "[" << i + 1 << "] - Server Name: " << this->getServerNames().at(i) << std::endl;
     std::cout << "Default Server: " << this->getDefaultServer() << std::endl;
 	if (this->getErrorPage().size() == 0)
-        std::cout << "[1] - Error Page: Nothing" << std::endl;
-	for (std::size_t i = 0; i < this->getErrorPage().size(); i++)
-        std::cout << "[" << i + 1 << "] - Error Page: " << this->getErrorPage().at(i) << std::endl;
+        std::cout << "[] - Error Page: Nothing" << std::endl;
+	for(std::map<int, std::string>::const_iterator it = this->errorPage.begin(); it != this->errorPage.end(); ++it)
+		std::cout << "Error code : " << it->first << " for page : " << it->second << std::endl;
     std::cout << "Max Request Body Size: " << this->getMaxRequestBodySize() << std::endl;
 	if (this->getRoute().size() == 0)
         std::cout << "[1] - Route: Nothing" << std::endl;
@@ -268,6 +325,6 @@ std::vector<int>			ServerConf::getPort() { return (this->port); }
 std::string					ServerConf::getHost() { return (this->host); }
 std::vector<std::string>	ServerConf::getServerNames() { return (this->serverNames); }
 std::string					ServerConf::getDefaultServer() { return (this->defaultServer); }
-std::vector<std::string>	ServerConf::getErrorPage() { return (this->errorPage); }
+std::map<int, std::string>	ServerConf::getErrorPage() { return (this->errorPage); }
 int							ServerConf::getMaxRequestBodySize() { return (this->maxRequestBodySize); }
 std::vector<Routes>			ServerConf::getRoute() { return (this->routes); }
