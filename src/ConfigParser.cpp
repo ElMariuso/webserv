@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/22 10:16:32 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/26 12:02:25 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int ConfigParser::configParsing()
     std::string buffer;
     
     buffer = this->readFile(this->configFile);
-    if (buffer == "")
-        return (-1);
+	if (buffer == "")
+		return (-1);
 	get_value_from_file(buffer, 0);
     return (0);
 }
