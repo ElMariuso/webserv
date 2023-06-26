@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/17 14:08:15 by bvernimm          #+#    #+#             */
-/*   Updated: 2023/06/22 10:16:17 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/26 13:10:46 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ bool Routes::get_bool_value(std::string attribute, std::string file)
 	found++;
 	while(file[found] && file[found] != '"')
 	{
+		if (file[found] == '\n')
+			throw (std::runtime_error(error));
 		str.push_back(file[found]);
 		found++;
 	}
@@ -141,6 +143,8 @@ std::string Routes::get_string_value(std::string attribute, std::string file)
 	found++;
 	while(file[found] && file[found] != '"')
 	{
+		if (file[found] == '\n')
+			throw (std::runtime_error(error));
 		str.push_back(file[found]);
 		found++;
 	}
@@ -174,6 +178,8 @@ std::vector<std::string> Routes::get_multiple_string_value(std::string attribute
 		found++;
 		while(file[found] && file[found] != '"')
 		{
+			if (file[found] == '\n')
+				throw (std::runtime_error(error));
 			str.push_back(file[found]);
 			found++;
 		}

@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 10:21:49 by bvernimm          #+#    #+#             */
-/*   Updated: 2023/06/26 11:58:13 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/26 13:39:50 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ int ServerConf::get_int_value(std::string attribute, std::string file)
 	found++;
 	while(file[found] && file[found] != '"')
 	{
+		if (file[found] == '\n')
+			throw (std::runtime_error(error));
 		nb.push_back(file[found]);
 		found++;
 	}
@@ -120,6 +122,8 @@ std::vector<int> ServerConf::get_multiple_int_value(std::string attribute, std::
 		found++;
 		while(file[found] && file[found] != '"')
 		{
+			if (file[found] == '\n')
+				throw (std::runtime_error(error));
 			nb.push_back(file[found]);
 			found++;
 		}
@@ -156,6 +160,8 @@ std::string ServerConf::get_string_value(std::string attribute, std::string file
 	found++;
 	while(file[found] && file[found] != '"')
 	{
+		if (file[found] == '\n')
+			throw (std::runtime_error(error));
 		str.push_back(file[found]);
 		found++;
 	}
@@ -189,6 +195,8 @@ std::vector<std::string> ServerConf::get_multiple_string_value(std::string attri
 		found++;
 		while(file[found] && file[found] != '"')
 		{
+			if (file[found] == '\n')
+				throw (std::runtime_error(error));
 			str.push_back(file[found]);
 			found++;
 		}
@@ -227,6 +235,8 @@ std::map<int, std::string> ServerConf::get_int_string_map(std::string attribute,
 		found++;
 		while(file[found] && file[found] != '"')
 		{
+			if (file[found] == '\n')
+				throw (std::runtime_error(error));
 			str.push_back(file[found]);
 			found++;
 		}
@@ -246,6 +256,8 @@ std::map<int, std::string> ServerConf::get_int_string_map(std::string attribute,
 		found++;
 		while(file[found] && file[found] != '"')
 		{
+			if (file[found] == '\n')
+				throw (std::runtime_error(error));
 			str.push_back(file[found]);
 			found++;
 		}

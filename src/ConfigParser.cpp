@@ -6,7 +6,7 @@
 /*   By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 17:49:55 by root              #+#    #+#             */
-/*   Updated: 2023/06/26 12:02:25 by bvernimm         ###   ########.fr       */
+/*   Updated: 2023/06/26 13:40:24 by bvernimm         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,11 @@ void ConfigParser::get_value_from_file(std::string file, int start)
 			bracketLevel--;
 		found++;
 	}
+	if (bracketLevel != 0)
+		throw (std::runtime_error("Missing '}'"));
 	newServer.getValuesFrom(serverBlock);
 	this->serverData.push_back(newServer);
 	get_value_from_file(file, found);
-}
-
-
-/* Checkers */
-bool ConfigParser::isInRightFormat()
-{
-    return (true);
 }
 
 /* Debug */
