@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 13:36:01 by root              #+#    #+#             */
-/*   Updated: 2023/06/21 12:51:49 by root             ###   ########.fr       */
+/*   Updated: 2023/06/26 15:16:53 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ HTTPServer::HTTPServer(): ConfigParser()
             throw (std::runtime_error(this->errorMessage(1, ret)));
     }
     ret = this->process();
+    if (ret != 0)
+        throw (std::runtime_error(this->errorMessage(1, ret)));
 }
 
 HTTPServer::HTTPServer(std::string path): ConfigParser(path)
@@ -40,6 +42,8 @@ HTTPServer::HTTPServer(std::string path): ConfigParser(path)
             throw (std::runtime_error(this->errorMessage(1, ret)));
     }
     ret = this->process();
+    if (ret != 0)
+        throw (std::runtime_error(this->errorMessage(1, ret)));
 }
 
 /* Destructor */
@@ -88,11 +92,14 @@ struct sockaddr_in HTTPServer::setDefaultAddr(int index)
 
 int HTTPServer::process()
 {
-    int     max_sd;
-    int     rc;
-    int     error;
-    fd_set  master_set;
-    fd_set  working_set;
+    int                 max_sd;
+    int                 rc;
+    int                 error;
+    fd_set              master_set;
+    fd_set              working_set;
+    struct sockaddr_in  client_addr;
+    socklen_t           addr_len;
+    int                 new_socket;
     
     FD_ZERO(&master_set);
     max_sd = this->sockets[0].fd;
@@ -106,6 +113,46 @@ int HTTPServer::process()
         {
             error = errno;
             return (error);
+        }
+        for (int i = 0; i <= max_sd; ++i)
+        {
+            if (FD_ISSET(i, &working_set))
+            {
+                if (i == this->sockets[0].fd)
+                {
+                    addr_len = sizeof(client_addr);
+                    new_socket = accept(i, (struct sockaddr *)&client_addr, &addr_len);
+                    if (new_socket < 0)
+                    {
+                        error = errno;
+                        return (error);
+                    }
+                    FD_SET(new_socket, &master_set);
+                    if (new_socket > max_sd)
+                        max_sd = new_socket;
+                    std::cout << "New connexion accepted. Socket FD: " << new_socket << std::endl;
+                }
+                else
+                {
+                    char buffer[1024];
+                    int bytes_read = read(i, buffer, sizeof(buffer));
+                    if (bytes_read > 0)
+                    {
+                        std::string request(buffer, bytes_read);
+                        std::cout << "Received request:" << std::endl << request << std::endl;
+
+                        std::string response = "HTTP/1.1 200 0K\r\n"
+                                                "Content-Type: text/plain\r\n"
+                                                "\r\n"
+                                                "Hello, world!";
+
+                        write(i, response.c_str(), response.size());
+                    }
+                    close(i);
+                    FD_CLR(i, &master_set);
+                    std::cout << "Connection closed. Socket FD: " << i << std::endl;
+                }
+            }
         }
     }
     while (true);

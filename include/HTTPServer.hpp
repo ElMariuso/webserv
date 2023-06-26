@@ -6,7 +6,7 @@
 /*   By: root <root@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 16:47:13 by root              #+#    #+#             */
-/*   Updated: 2023/06/21 12:46:45 by root             ###   ########.fr       */
+/*   Updated: 2023/06/26 15:15:51 by root             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,9 @@
 # include <iostream>
 # include <sys/socket.h>
 # include <sys/types.h>
-
 # include <netinet/in.h>
 # include <cstring>
+# include <unistd.h>
 
 /* Includes.hpp ************************************************************* */
 
