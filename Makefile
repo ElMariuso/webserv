@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: root <root@student.42.fr>                  +#+  +:+       +#+         #
+#    By: bvernimm <bvernimm@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 12:54:28 by root              #+#    #+#              #
-#    Updated: 2023/06/21 12:46:22 by root             ###   ########.fr        #
+#    Updated: 2023/06/21 10:17:40 by bvernimm         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,8 @@ INCS = -I$(INC_DIR)
 SRC_DIR = src
 SRCS = $(wildcard  $(SRC_DIR)/main.cpp) \
 		$(wildcard $(SRC_DIR)/ConfigParser.cpp) \
+		$(wildcard $(SRC_DIR)/ServerConf.cpp) \
+		$(wildcard $(SRC_DIR)/Routes.cpp) \
 		$(wildcard $(SRC_DIR)/HTTPServer.cpp) \
 		$(wildcard $(SRC_DIR)/Utils.cpp) 
 
