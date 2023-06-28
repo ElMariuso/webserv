@@ -26,6 +26,7 @@ SRCS = $(wildcard  $(SRC_DIR)/main.cpp) \
 		$(wildcard $(SRC_DIR)/ServerConf.cpp) \
 		$(wildcard $(SRC_DIR)/Routes.cpp) \
 		$(wildcard $(SRC_DIR)/HTTPServer.cpp) \
+		$(wildcard $(SRC_DIR)/Utils.cpp) 
 
 OBJ_DIR	= objs
 OBJ_FILES = $(notdir $(SRCS:.cpp=.o))
