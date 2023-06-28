@@ -6,7 +6,7 @@
 #    By: root <root@student.42.fr>                  +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 12:54:28 by root              #+#    #+#              #
-#    Updated: 2023/06/02 13:37:46 by root             ###   ########.fr        #
+#    Updated: 2023/06/21 12:46:22 by root             ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ SRC_DIR = src
 SRCS = $(wildcard  $(SRC_DIR)/main.cpp) \
 		$(wildcard $(SRC_DIR)/ConfigParser.cpp) \
 		$(wildcard $(SRC_DIR)/HTTPServer.cpp) \
+		$(wildcard $(SRC_DIR)/Utils.cpp) 
 
 OBJ_DIR	= objs
 OBJ_FILES = $(notdir $(SRCS:.cpp=.o))
